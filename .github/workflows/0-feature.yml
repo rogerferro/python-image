@@ -2,8 +2,11 @@ name: Feature / Fix branch
 on:
   push:
     branches:
-      - 'feature**'
-      - 'fix**'
+      - 'feature/**'
+      - 'fix/**'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   python-ci:
