@@ -8,9 +8,6 @@ permissions:
   packages: read
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_call:
     inputs:
       settings-file:
@@ -39,7 +36,7 @@ jobs:
         id: settings-parser
         uses: christian-ci/action-yaml-github-output@v2
         with:
-          file_path: './${{ inputs.settings-file }}'
+          file_path: './${{ inputs.settings-file }}'      
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -63,6 +60,7 @@ jobs:
 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v4
+        # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
         with:
           name: pytest-results
@@ -73,7 +71,6 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     needs:
       - ci-image
-    if: github.event_name == 'workflow_call'
     steps:
       - uses: actions/checkout@v4
 
